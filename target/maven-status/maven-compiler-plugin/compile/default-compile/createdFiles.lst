@@ -2,6 +2,7 @@ com\nfc\entities\Users.class
 com\nfc\services\PersonalInfoService.class
 com\nfc\controller\AuthController.class
 com\nfc\repository\UserRepository.class
+com\nfc\Nfc_Application$1.class
 com\nfc\repository\PersonalInfoRepository.class
 com\nfc\services\UserService.class
 com\nfc\entities\PersonalInfo.class

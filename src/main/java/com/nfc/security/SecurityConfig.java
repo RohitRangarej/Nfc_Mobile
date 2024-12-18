@@ -22,7 +22,8 @@ public class SecurityConfig {
                 .anyRequest().permitAll() // Allow all requests (for testing)
             )
             .formLogin(formLogin -> formLogin.disable()) // Disable Form Login
-            .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic Authentication
+            .httpBasic(httpBasic -> httpBasic.disable()) // Disable HTTP Basic Authentication
+        	.cors(cors -> cors.configurationSource(request -> new org.springframework.web.cors.CorsConfiguration().applyPermitDefaultValues()));
 
         return http.build(); // Ensure this is called only once
     }
