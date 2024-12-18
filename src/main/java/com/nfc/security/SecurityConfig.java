@@ -9,7 +9,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -22,37 +21,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF protection for APIs
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Custom CORS configuration
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // Allow all requests for testing
-            .formLogin(formLogin -> formLogin.disable()) // Disable form login
+            .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll() // Allow all requests (for testing)
+            )
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
+            .formLogin(formLogin -> formLogin.disable()) // Disable Form Login
             .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic Authentication
 
         return http.build();
     }
 
+    // Define the CORS configuration source
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow specific origins (replace with actual origins)
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:4200", "https://your-production-domain.com"));
-        // Allow specific HTTP methods
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Allow specific headers, including Accept
-        configuration.setAllowedHeaders(List.of(
-            "Authorization",
-            "Content-Type",
-            "Accept",
-            "X-Requested-With",
-            "Origin"
-        ));
-        // Expose headers to the client (optional, e.g., for tokens)
-        configuration.setExposedHeaders(List.of("Authorization", "Content-Disposition"));
-        // Allow credentials (e.g., cookies, Authorization headers)
-        configuration.setAllowCredentials(true);
-
+        configuration.addAllowedOrigin("*"); // Allow all origins
+        configuration.addAllowedMethod("*"); // Allow all HTTP methods
+        configuration.addAllowedHeader("*"); // Allow all headers
+        configuration.setAllowCredentials(false); // Disable cookies sharing for simplicity
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }

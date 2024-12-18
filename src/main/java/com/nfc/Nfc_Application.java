@@ -17,7 +17,11 @@ public class Nfc_Application {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
+            	registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow HTTP methods
+                .allowedHeaders("Content-Type", "Authorization") // Allow specific headers
+                .allowCredentials(false); // Disable cookies sharing for simplicity
             }
         };
     }
