@@ -17,12 +17,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF protection (for APIs)
+	        .csrf(csrf -> csrf.disable()) // Disable CSRF protection (for APIs)
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll() // Allow all requests (for testing)
             )
             .formLogin(formLogin -> formLogin.disable()) // Disable Form Login
-            .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic Authentication
+            .httpBasic(httpBasic -> httpBasic.disable()) // Disable HTTP Basic Authentication
+        	.cors(cors -> cors.configurationSource(request -> new org.springframework.web.cors.CorsConfiguration().applyPermitDefaultValues()));
 
         return http.build(); // Ensure this is called only once
     }
