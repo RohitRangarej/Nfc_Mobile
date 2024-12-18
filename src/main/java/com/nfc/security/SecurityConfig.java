@@ -5,10 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import java.util.*;
 
 @Configuration
 public class SecurityConfig {
@@ -21,8 +19,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-	        .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
-	        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
+	        .cors(cors -> cors.configurationSource(request -> {
+	            var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+	            corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "https://your-deployed-react-url.com"));
+	            corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	            corsConfig.setAllowedHeaders(List.of("*"));
+	            corsConfig.setAllowCredentials(true);
+	            var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+	            source.registerCorsConfiguration("/api/**", corsConfig);
+	            return source.getCorsConfiguration(request);
+	        }))
+	        .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers("/api/**").permitAll()
                 .anyRequest().permitAll() // Allow all requests (for testing)
@@ -31,18 +38,5 @@ public class SecurityConfig {
             .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic Authentication
 
         return http.build();
-    }
-
-    // Define CORS configuration
-    private UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://your-frontend-domain.com")); // Add your allowed origins
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
-        return source;
     }
 }
