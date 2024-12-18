@@ -20,41 +20,37 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity sec) throws Exception {
-        sec
-            .csrf(csrf -> csrf.disable()) // Disable CSRF protection (for APIs)
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Allow all requests (for testing)
-            )
-            .formLogin(formLogin -> formLogin.disable()) // Disable Form Login
-            .httpBasic(httpBasic -> httpBasic.disable()) // Disable HTTP Basic Authentication
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())); // Apply custom CORS configuration
-        
-        return sec.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable()) // Disable CSRF protection for APIs
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Custom CORS configuration
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // Allow all requests for testing
+            .formLogin(formLogin -> formLogin.disable()) // Disable form login
+            .httpBasic(httpBasic -> httpBasic.disable()); // Disable HTTP Basic Authentication
+
+        return http.build();
     }
 
-    /**
-     * Define a custom CORS configuration source.
-     * Adjust allowed origins, methods, and headers as per your requirements.
-     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-            "http://localhost:3000",
-            "https://nfc-profile.onrender.com" // Your production domain
-        ));
-        configuration.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS" // Allowed HTTP methods
-        ));
+        // Allow specific origins (replace with actual origins)
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:4200", "https://your-production-domain.com"));
+        // Allow specific HTTP methods
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // Allow specific headers, including Accept
         configuration.setAllowedHeaders(List.of(
-            "Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin" // Allowed headers
+            "Authorization",
+            "Content-Type",
+            "Accept",
+            "X-Requested-With",
+            "Origin"
         ));
-        configuration.setExposedHeaders(List.of(
-            "Authorization", "Content-Disposition" // Headers exposed to the client
-        ));
-        configuration.setAllowCredentials(true); // Allow cookies or credentials
-        
+        // Expose headers to the client (optional, e.g., for tokens)
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Disposition"));
+        // Allow credentials (e.g., cookies, Authorization headers)
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
         return source;
