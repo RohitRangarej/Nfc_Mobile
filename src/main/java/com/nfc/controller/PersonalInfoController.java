@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.nfc.entities.PersonalInfo;
+import com.nfc.entities.PersonalInfoDTO;
 import com.nfc.services.PersonalInfoService;
 
 import java.util.List;
@@ -35,6 +36,22 @@ public class PersonalInfoController {
     public ResponseEntity<List<PersonalInfo>> getAll() {
         return ResponseEntity.ok(service.getAllPersonalInfo());
     }
+    
+    @GetMapping("/list")
+    public ResponseEntity<List<PersonalInfoDTO>> getIdNameEmailList() {
+        List<PersonalInfo> personalInfoList = service.getAllPersonalInfo();
+        
+        // Map the PersonalInfo entities to PersonalInfoDTO
+        List<PersonalInfoDTO> dtoList = personalInfoList.stream()
+            .map(info -> new PersonalInfoDTO(
+                info.getId(),
+                info.getFirstName() + " " + info.getLastName(), // Combine first and last name
+                info.getEmail()))
+            .toList();
+
+        return ResponseEntity.ok(dtoList);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable String id) {
