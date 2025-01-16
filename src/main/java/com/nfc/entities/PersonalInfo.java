@@ -34,5 +34,7 @@ public class PersonalInfo {
 
     private List<String> gallery = new ArrayList<>();
     private List<String> socialLinks = new ArrayList<>();
+    private List<Product> products;
+    private List<Service> services;
     
 }
