@@ -2,6 +2,8 @@ C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Applic
 C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\controller\PersonalInfoController.java
 C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\entities\PersonalInfo.java
 C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\entities\PersonalInfoDTO.java
+C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\entities\Product.java
+C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\entities\Service.java
 C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\entities\Users.java
 C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\Nfc_Application.java
 C:\Users\91911\Documents\workspace-spring-tool-suite-4-4.22.1.RELEASE\Nfc_Application\src\main\java\com\nfc\repository\PersonalInfoRepository.java
